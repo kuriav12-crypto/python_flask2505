@@ -1,0 +1,27 @@
+<!--{# This is the site's base template that will be used to create all the other pages in our site via-->
+<!--    Python inheritance #}-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DS 2505 - {% block page_title %} {% endblock page_title %}</title>
+    <!-- Link to the main stylesheet-->
+</head>
+<body>
+<div id="container">
+    <h1 class="page-heading">{% block page_heading %} {% endblock %}</h1>
+    {# template block for the page content #}
+    {% block page_content %} {% endblock %}
+    <footer class="page-footer">
+            DS 2505 Copyright &copy 2022 -
+            <span id="currYear">
+                <script async defer>
+                document.getElementById('currYear').innerHTML = new Date().getFullYear();
+                </script>
+            </span><br/>
+            Designed/Powered by <a href="#" target="_blank">Vic Designs</a>
+        </footer>
+</div>
+</body>
+</html>
