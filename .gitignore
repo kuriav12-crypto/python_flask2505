@@ -1,0 +1,75 @@
+# Files that will not be uploaded on our github repository
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+*.db
+
+# Flask
+instance/
+*.log
+*.pot
+*.pyc
+*.pyo
+*.db
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# Virtual Environments
+venv/
+env/
+*.env
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Linux
+*~
+
+# Pycharm specific
+.idea/.name
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries/
+
+# VS Code specific
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+
+# Mypy
+.mypy_cache/
+
+# Coverage reports
+.coverage
+coverage.xml
+*.cover
+*.py,cover
+
+# Distribution/Packaging
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+bin/
+var/
+*.manifest
+*.spec
+
+# Test/Temporary files
+*.bak
+*.swp
+*.swo
