@@ -1,0 +1,14 @@
+<!--{# The DS 2505 server 500 - Internal server error page #}-->
+<!--{# Inherit the code from the base template #}-->
+{% extends 'base.html' %}
+<!--{# specify the page title #}-->
+{% block page_title %} Internal Server Error{% endblock page_title %}
+{% block page_heading %}
+    500 - Internal Server Error
+{% endblock %}
+{% block page_content %}
+    <p>Oops! Sorry, it seems something is wrong with your server.<br/>
+        We are working to fix it. Kndly try again later in a few...</p>
+        {# Redirect the user to the site's home page #}
+        <a href="{{ url_for('index') }}">Return to home</a>
+{% endblock %}

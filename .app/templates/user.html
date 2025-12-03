@@ -1,0 +1,17 @@
+<!--{# The DS 2505 site's Home Page #}-->
+<!--{# Inherit the code from the base template #}-->
+{% extends 'base.html' %}
+<!--{# specify the page title #}-->
+{% block page_title %} User{% endblock page_title %}
+{% block page_heading %}
+    Welcome to the DS 2505 User page
+{% endblock %}
+
+{% block page_content %}
+    {# Greet user if the username variable exists (when passed when loading the page) #}
+    {% if username %}
+        <h1>Hello {{ username|upper }}!</h1> {# Convert the username to uppercase #}
+    {% else %}
+        <h1>Hello Guest!</h1>
+    {% endif %}
+{% endblock %}

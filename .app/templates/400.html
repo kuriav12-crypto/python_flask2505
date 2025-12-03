@@ -1,0 +1,14 @@
+<!--{# The DS 2505 server 400 - Bad request page #}-->
+<!--{# Inherit the code from the base template #}-->
+{% extends 'base.html' %}
+<!--{# specify the page title #}-->
+{% block page_title %} Bad Request{% endblock page_title %}
+{% block page_heading %}
+    400 - Bad Request
+{% endblock %}
+{% block page_content %}
+    <p>The server cannot process the request due to a client error (invalid syntax or incorrect format).
+        Please try again later</p>
+        {# Redirect the user to the site's home page #}
+        <a href="{{ url_for('index') }}">Return to home</a>
+{% endblock %}

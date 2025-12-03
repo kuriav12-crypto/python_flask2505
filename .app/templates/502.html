@@ -1,0 +1,14 @@
+<!--{# The DS 2505 server 503 - Bad gateway page #}-->
+<!--{# Inherit the code from the base template #}-->
+{% extends 'base.html' %}
+<!--{# specify the page title #}-->
+{% block page_title %} Bad Gateway{% endblock page_title %}
+{% block page_heading %}
+    502 - Bad Gateway
+{% endblock %}
+{% block page_content %}
+    <p>The server acting as a gateway received an invalid response from the upstream server<br/>
+        Please try again later</p>
+        {# Redirect the user to the site's home page #}
+        <a href="{{ url_for('index') }}">Return to home</a>
+{% endblock %}
