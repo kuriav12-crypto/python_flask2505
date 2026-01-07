@@ -1,0 +1,17 @@
+<!--{# The DS 2505 site's Successful registration or Login Page #}-->
+<!--{# Inherit the code from the base template #}-->
+{% extends 'base.html' %}
+<!--{# specify the page title #}-->
+{% block page_title %} Registration/Login Success{% endblock page_title %}
+{% block page_heading %}
+        Welcome, you have successfully registered or signed in!
+{% endblock %}
+
+{% block page_content %}
+    <div class="container mt-5">
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Success!</h4>
+            <p>Your browser is:<br/>{{ user_agent }}</p>
+        </div>
+    </div>
+{% endblock %}

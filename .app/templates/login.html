@@ -1,0 +1,34 @@
+<!--{# The DS 2505 site's Login/Sign-in Page #}-->
+<!--{# Inherit the code from the base template #}-->
+{% extends 'base.html' %}
+<!--{# specify the page title #}-->
+{% block page_title %} Login{% endblock page_title %}
+{% block page_heading %}
+    Login/Sign-in Page
+{% endblock %}
+
+{% block page_content %}
+    {# TODO: Add flash message for failed login #}
+    {# Login Form #}
+    <form id="frmLogin" method="post" action="">
+        {{form.hidden_tag() }} {# The site's CSRF token #}
+        <fieldset>
+            <legend>Login Details</legend>
+            <div class="mb=3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control", placeholder="me@email.com") }}
+            </div>
+            <div class="mb=3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", placeholder="secr3t passw0rd") }}
+            </div>
+        </fieldset>
+        <br/>
+        <div class="mb=3">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    <div>
+        <p>Don&rsquo;t have an account? <a href="#">Login/Sign-in</a></p>
+    </div>
+{% endblock %}
