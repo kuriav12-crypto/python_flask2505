@@ -20,5 +20,5 @@ class LoginForm(FlaskForm):
 
     # Submit and Reset buttons
     submit = SubmitField('Login',
-                         render_kw={'title': 'SLogin/sign-in to the site',
+                         render_kw={'title': 'Login/sign-in to the site',
                                     'tabindex':30})

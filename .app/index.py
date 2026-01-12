@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, url_for, flash
 import secrets
 
 from registration import RegistrationForm
+from login import LoginForm
 
 # Declare and create/instantiate a flask object
 app = Flask(__name__)
@@ -59,7 +60,7 @@ def register():
         for field, errors in form.errors.items():
             for error in errors:
                 flash(f"Error in {getattr(form,field).label.text}: {error}","danger")
-    return render_template('register.html',form=form)
+    return render_template('registration.html',form=form)
 
 # Route to the login/sign-in page
 @app.route('/login', methods=['GET','POST'])
