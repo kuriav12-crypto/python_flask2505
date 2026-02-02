@@ -1,16 +1,22 @@
 # Python script to act as the launch point to our Flask web application
+import string
 
 # Import the required modules
 from flask import Flask, render_template, request, url_for, flash, redirect
+from flask_login import current_user,LoginManager
+from flask_login import login_user, logout_user, login_required # For application authentication & authorization
 import secrets
+import string
 
 # Import the registration, login and product form modules
-from registration import RegistrationForm
+from register import RegistrationForm
 from login import LoginForm
 from product_form import ProductForm
 
 # Import the database modules
-from models import Product, init_db, db
+from models import Product, init_db, db, User, Role, UserRole
+from seed_products_users_and_roles import seed_all
+
 # Declare and create/instantiate a flask object
 app = Flask(__name__)
 
@@ -24,6 +30,49 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ds2505.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #Initialise the database
 init_db(app)
+seed_all(app)
+
+# Setup Flask_login for the applicaion's login functionality
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# Create a guest user to access out unprotected site areas anonymously (unauthenticated access)
+class GuestUser:
+    def __init__(self):
+        self.full_name = "Guest"
+        self.is_authenticated = False
+        self.is_active = False
+        self.is_anonymous = True
+
+    def is_admin_or_manager(self):
+        return False
+
+    def get_id(self):
+        return None
+
+# Function to get the user object for the current user, if the current user is authenticated, else
+# it returns a Guest subject
+@app.context_processor
+def inject_user():
+    if current_user.is_authenticated:
+        return {"current_user": current_user}
+    else:
+        return {"current_user": GuestUser}
+
+# Function to generate the prefix for the product ids when adding new products in the product's table
+def generate_product_id():
+    prefix = '01H73QEWM'
+    alphabet = string.ascii_uppercase + string.digits
+    while True:
+        suffix = "".join(secrets.choice(alphabet) for _ in range(8))
+        candidate = prefix + suffix
+        if Product.query.get(candidate) is None: # when the product id doesn't exist in the 'product' table
+            return candidate
 
 
 # Set the route to the index/home page
@@ -119,10 +168,10 @@ def add_product():
         db.session.add(new_product)
         db.session.commit()
         return redirect(url_for('products'))
-    return render_template('add-product.html', form=form)
+    return render_template('add-products.html', form=form)
 
 # Route to the edit product page (used to modify/change an item in the product list/catalogue)
-@app.route("/edit_product/<string:product_id>", methods=['GET', 'POST'])
+@app.route("/edit_product/<string:id>", methods=['GET', 'POST'])
 def edit_product(id):
     product = Product.query.get(id)
     if product is None:
@@ -133,7 +182,7 @@ def edit_product(id):
         product.price = form.price.data
         db.session.commit()
         return redirect(url_for('products'))
-    return render_template('edit_product.html', form=form)
+    return render_template('edit-products.html', form=form)
 
 # Route to delete product detail from the product catalogue and subsequently from the product's table
 @app.route("/delete_product/<string:id>", methods=['GET', 'POST'])

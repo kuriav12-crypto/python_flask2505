@@ -1,0 +1,27 @@
+<!--{# The DS 2505 sadd product page #}-->
+<!--{# Inherit the code from the base template #}-->
+{% extends 'base.html' %}
+<!--{# specify the page title #}-->
+{% block page_title %} Add product{% endblock page_title %}
+{% block page_heading %}
+    Add New Product to Catalogue
+{% endblock %}
+
+{% block page_content %}
+    {# Form to add a new product to our product catalogue #}
+    <form method="post">
+        {# Our site's CRSF token #}
+        {{ form.hidden_tag() }}
+        <p>
+            <label for="name">Product Name:<span class="required-field">*</span> </label><br/>
+            {{ form.name }}
+        </p>
+        <p>
+            <label for="name">Product Price:<span class="required-field">*</span> </label><br/>
+            {{ form.price }}
+        </p>
+        <button type="submit">Add Product</button>
+    </form><br/>
+    {# Link back to the product listing page #}
+    <a href="{{ url_for('products') }}">Back to product list</a>
+{% endblock %}

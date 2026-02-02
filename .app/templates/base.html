@@ -6,7 +6,12 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>DS 2505 - {% block page_title %} {% endblock page_title %}</title>
+
+    {# Optional scripts and styles #}
+    {% block embed_style_or_script %}  {% endblock %}
+
     <!-- Link to the main stylesheet-->
+    <link rel="stylesheet" href="../static/css/main.css">
 </head>
 <body>
 <div id="container">

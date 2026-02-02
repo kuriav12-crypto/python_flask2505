@@ -1,0 +1,359 @@
+@charset "utf-8";
+
+/* CSS document containing site-wide rules to be applied across all devices on all browsers. */
+
+/* Add the bootstrap CDN imports to allow us use the bootstrap icoms in our site */
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css');
+
+/* Import the lobster font form the google fonts api to use in our site. */
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+/* Import the fonts.css file to enable the use of webfonts in our site. */
+@import url("fonts.css");
+
+/* -------------------------------------------------------------------------------------------
+    Global reset and base styles
+    ------------------------------------------------------------------------------------------ */
+
+*, *::before, *::after {box-sizing: border-box; margin: 0; padding: 0;}
+
+html {scroll-behavior: smooth;}
+
+body
+{
+    margin: 0;
+    padding-top: 70 px; /*space for the fixed navigation bar. */
+    /* TODO: specify the font family */
+    font-family: 'quicksandregular';
+    font-size: 17 px;
+    line-height: 1.5;
+    text-align: justify;
+    color: #fff;
+    background-image:url('../images/kkgd_sunset.jpg') ;
+    background-position: center top;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* -------------------------------------------------------------------------------------------
+    Layout container div
+    ------------------------------------------------------------------------------------------ */
+#container
+{
+    max-width: 1300px;
+    margin: 2% auto;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 75);
+    border-top-right-radius: 25px;
+    border-bottom-left-radius: 25px;
+    background-image:url('../images/kkgd_sunset.jpg') ;
+    background-position: center top;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* mobile device override */
+@media(max-width:768px)
+{
+    #container
+    {width: 90%;}
+}
+
+/*tablet & upwards device override */
+@media(max-width:768px)
+{
+    #container
+    {
+        width: 90%;
+        padding: 2%;
+    }
+}
+
+/* -------------------------------------------------------------------------------------------
+    Headings
+    ------------------------------------------------------------------------------------------ */
+.page-heading
+{
+    /* font-family: ; TODO: specify the font family */
+    font-weight: 800;
+    font-size: 2.2rem;
+    text-align: center;
+    color: #f0b7a1;
+    margin-bottom: .5rem;
+}
+.page_heading_underline {border-bottom: 4px double #0beaf5;}
+
+.section-heading
+{
+    font-family: 'montserrat_alternatesregular';
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-align: center;
+    color: #f80;
+    margin: 2rem 0 1rem;
+}
+
+/* -------------------------------------------------------------------------------------------
+    Footer
+    ------------------------------------------------------------------------------------------ */
+.page-footer
+{
+    text-align: center;
+    color:#f80;
+    /* font-family: ; TODO: specify the font family */
+    font-family: "Lobster";
+    margin: 1rem 0;
+    font-size: 1.1rem;
+}
+
+/* -------------------------------------------------------------------------------------------
+    image gallery - responsive grid
+    ------------------------------------------------------------------------------------------ */
+
+.gallery
+{
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.gallery{grid-template-columns: 1fr;} /* default 1 column (mobile) */
+/* mobile device override */
+@media(min-width:768px) and (max-width: 1023px)
+{
+    .gallery{grid-template-columns: repeat(2,1fr);}
+}
+/*desktop device override */
+@media(min-width:1024px) and (max-width: 1439px)
+{
+    .gallery{grid-template-columns: repeat(3,1fr);}
+}
+/*devices with 1440p and above override */
+@media(min-width:1440px)
+{
+    .gallery{grid-template-columns: repeat(4,1fr);}
+}
+
+/* Card styling */
+.gallery .item
+{
+    background: #fff;
+    border-radius: .5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 15);
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.gallery img
+{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border: 2px groove #fff;
+    /* optionally add border radius */
+}
+
+.gallery figcaption
+{
+    padding: .75rem;
+    font-size: .95rem;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    color: #000
+}
+
+.gallery .price { color: #2a9d8f;}
+.price::before { content: 'Kes: ';}
+.price::after {content: '/=';}
+
+/* -------------------------------------------------------------------------------------------
+    Style the forms in our site
+    ------------------------------------------------------------------------------------------ */
+form
+{
+    max-width: 700px;
+    margin: 2rem auto;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* Style the form fieldsets */
+
+form fieldset
+{
+    background-color: #000;
+    border: 2px groove #ede5ef;
+    border-radius: 15px;
+    margin-bottom: 7px;
+    padding-bottom: 7px;
+}
+
+/* Style the form's required field indicator */
+.required-field
+{
+    color: #f00;
+    font-weight: bolder;
+    font-size: .9em;
+}
+
+/*Style the form buttons */
+form input[type=submit], input[type=reset], input[type="button"], form button
+{
+    background: linear-gradient(to bottom, #f0b7a1 0%,#8c3310 50%,#752201 51%,#bf6e4e 100%);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 400;
+    text-transform: uppercase;
+    border-radius: 5px;
+    border-radius: thin outset rgba(231,222,222,.9);
+}
+
+/* mobile device override */
+@media(max-width:767px)
+{
+    form textarea,
+    form input[type=text], input[type=password], input[type=tel], input[type=email], input[type=number], input[type=date], form select, form label
+    {
+        width: 98%;
+        margin-left: 1%;
+    }
+    input[type=radio], input[type=submit], input[type=reset] {margin-left: 1%;}
+}
+
+/*tablet & upwards device override */
+@media(min-width:768px)
+{
+    form textarea,
+    form input[type=text], input[type=password], input[type=tel], input[type=email], input[type=number], input[type=date] [type=date], form select, form label
+    {
+        width: 96%;
+        margin-left: 2%;
+    }
+    input[type=radio], input[type=submit], input[type=reset] {margin-left: 2%;}
+}
+
+/* -------------------------------------------------------------------------------------------
+    Style the social media icons
+    ------------------------------------------------------------------------------------------ */
+.social-icons
+{
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem; /* slightly larger on the desktop */
+    flex-wrap: wrap;
+    list-style: none; /* remove the bullets */
+    padding: 0;
+    margin: 1.5rem 0;
+}
+/* mobile device override */
+@media(max-width:767px)
+{
+    .social-icons {gap: 1rem;} /* a bit tighter on phones */
+}
+
+/* -------------------------------------------------------------------------------------------
+    Style the site's navigation bar
+    ------------------------------------------------------------------------------------------ */
+.main-nav
+{
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, .9);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    padding: .75rem 1rem;
+    border-bottom: 3px solid #f00; /*red ccent */
+}
+
+/* Horizontal list - default for tablet and larger screen sizes */
+.nav-list
+{
+    display: flex;
+    justify-self: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.nav-link
+{
+    color: #fff;
+    /* font-family: ; */
+    font-family: 1.1rem;
+    text-decoration: none;
+    padding: .5 1rem;
+    border-radius: 5px;
+    transition: all .4s ease-out;
+}
+
+.nav-link:hover,.nav-link:focus
+{
+    background: #f00;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* current page highlight */
+.nav-link:active
+{
+    background: #f80;
+    color: #000;
+}
+
+/* mobile device override */
+@media(max-width:767px)
+{
+    .nav-list
+    {
+        position: fixed;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, .9);
+        flex-direction: column;
+        align-items: center;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .4s ease-out, padding .4s ease;
+        padding: 0;
+    }
+}
+
+/* Open state of the navigation */
+.nav-list.open
+{
+    max-height: 500px; /* should be enough for all items */
+    padding: 1rem 0;
+}
+
+.nav-link
+{
+    width: 90%;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.2rem;
+}
+
+/* Hamburger button visible only on mobile <- 767 px */
+.nav-toggle
+{
+    display: block;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Hide the hamburger menu on tablet and larger devices */
+@media (min-width:768px){.nav-toggle{display: none;}}
