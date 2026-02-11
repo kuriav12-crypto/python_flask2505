@@ -1,0 +1,13 @@
+<!--{# The DS 2505 site's Home Page #}-->
+<!--{# Inherit the code from the base template #}-->
+{% extends 'base.html' %}
+<!--{# specify the page title #}-->
+{% block page_title %} Home{% endblock page_title %}
+{% block page_heading %}
+    Welcome to the DS 2505 Flask Website 🎉🍷
+{% endblock %}
+
+{% block page_content %}
+    <h2>Hello World from Flask!!!</h2>
+    <p>Your browser is:<br/>{{ user_agent }}</p>
+{% endblock %}

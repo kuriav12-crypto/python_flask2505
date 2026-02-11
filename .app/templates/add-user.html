@@ -1,0 +1,126 @@
+<!--{# The DS 2505 site's Home Page #}-->
+<!--{# Inherit the code from the base template #}-->
+{% extends 'base.html' %}
+<!--{# specify the page title #}-->
+{% block page_title %} Add New User{% endblock page_title %}
+{% block page_heading %}
+    Create new user  account
+{% endblock %}
+
+{% block page_content %}
+    {% with messages = get_flashed_messages() %}
+        {% if message %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="flash-messages">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {# Form to add a new user account to the app. #}
+    <form method="post" action="{{ url_for('add_user') }}" class="user-form" id="frmAddUserAccount">
+        {{ form.hidden_tag() }} {# our site's CSRF token #}
+        <fieldset>
+            <legend>New User Account Details</legend>
+
+            {# User's email address #}
+            {{ form.email.label(class="form-label") }}<br/>
+            {{ form.email(form="frmAddUserAccount") }}
+            {% if form.email.errors %}
+                <div class="error-message">
+                    {% for error in form.email.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# User's full name #}
+            {{ form.full_name.label(class="form-label") }}<br/>
+            {{ form.full_name(form="frmAddUserAccount") }}
+            {% if form.full_name.errors %}
+                <div class="error-message">
+                    {% for error in form.full_name.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# User's birth date #}
+            {{ form.birth_date.label(class="form-label") }}<br/>
+            {{ form.birth_date(form="frmAddUserAccount") }}
+            {% if form.birth_date.errors %}
+                <div class="error-message">
+                    {% for error in form.birth_date.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# User's gender #}
+            {{ form.gender.label(class="form-label") }}<br/>
+            {% for subfield in form.gender %}
+                <div class="form-check">
+                    {{ subfield(class="form-check-input") }}
+                    {{ subfield.label(class="form-check-label") }}
+                </div>
+            {% endfor %}
+            {% if form.gender.errors %}
+                <div class="error-message">
+                    {% for error in form.gender.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# User's phone number #}
+            {{ form.phone.label(class="form-label") }}<br/>
+            {{ form.phone(form="frmAddUserAccount") }}
+            {% if form.phone.errors %}
+                <div class="error-message">
+                    {% for error in form.phone.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# User's password #}
+            {{ form.password.label(class="form-label") }}<br/>
+            {{ form.password(form="frmAddUserAccount") }}
+            {% if form.password.errors %}
+                <div class="error-message">
+                    {% for error in form.password.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# User's confirm password #}
+            {{ form.confirm_password.label(class="form-label") }}<br/>
+            {{ form.confirm_password(form="frmAddUserAccount") }}
+            {% if form.password.errors %}
+                <div class="error-message">
+                    {% for error in form.confirm_password.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# User's role #}
+            {{ form.role.label(class="form-label") }}<br/>
+            {{ form.role(form="frmAddUserAccount") }}
+            {% if form.role.errors %}
+                <div class="error-message">
+                    {% for error in form.role.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create User</button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+{% endblock %}

@@ -38,6 +38,10 @@ class User(db.Model, UserMixin):
         self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         self.password_updated_at = datetime.now(timezone.utc)
 
+    # Method to authenticate the user
+    def check_password(self, password):
+        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
+
     # Method to check if the user's email already exists in the database
     @staticmethod
     def check_email_exists_(email):
@@ -62,9 +66,9 @@ class User(db.Model, UserMixin):
         """Checks if the user has an admin or manager role"""
         if not self.is_authenticated:
             return False
-        return any(ur.role.name in ['Admin','Manager'] for ur in self.user_roles if ur.is_active)
+        return any(ur.role.name in ['Admin','Manager'] for ur in self.user_role if ur.is_active)
 
-    # Method to check whether a user is an admin or manager
+    # Method to check whether a user is an admin
     def is_admin(self):
         """Checks if the user has an admin role"""
         if not self.is_authenticated:
@@ -91,7 +95,7 @@ class UserRole(db.Model):
     __tablename__ = 'user_role'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    role_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
     assigned_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     assigned_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     expires_at = db.Column(db.DateTime)

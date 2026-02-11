@@ -101,7 +101,7 @@ body
 .page-footer
 {
     text-align: center;
-    color:#f80;
+    color:#f0b7a1;
     /* font-family: ; TODO: specify the font family */
     font-family: "Lobster";
     margin: 1rem 0;
@@ -357,3 +357,34 @@ form input[type=submit], input[type=reset], input[type="button"], form button
 
 /* Hide the hamburger menu on tablet and larger devices */
 @media (min-width:768px){.nav-toggle{display: none;}}
+
+body
+{
+    background-color: deepskyblue;
+    background-image: url("../images/bkgd_sea.jpg");
+    background-position: center top;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* --------------------------------------------------
+* Style the tables in our site
+* -------------------------------------------------- */
+.data-table
+{
+    width:80%;
+    margin-left:auto;
+    margin-right:auto;
+    color:inherit;
+}
+/* Style the table's odd and even rows differently */
+.data-table tr:nth-child(odd){background-color:#4075a8;}
+  .data-table tr:nth-child(even){background-color:#0d55ff;}
+/* Style the heading row differently */
+  .data-table tr:first-child
+  {
+     background-color:rgba(210,123,243,1);
+     text-align:center;
+     font-weight:800;
+     font-size:1.2em;
+  }

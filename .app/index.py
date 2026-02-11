@@ -1,21 +1,27 @@
 # Python script to act as the launch point to our Flask web application
-import string
+
+# From crypt import methods
 
 # Import the required modules
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect, jsonify, session
 from flask_login import current_user,LoginManager
 from flask_login import login_user, logout_user, login_required # For application authentication & authorization
+from datetime import datetime, timezone
 import secrets
 import string
 
 # Import the registration, login and product form modules
 from register import RegistrationForm
 from login import LoginForm
+from user_form import UserForm
 from product_form import ProductForm
 
-# Import the database modules
+# Import the database models
 from models import Product, init_db, db, User, Role, UserRole
 from seed_products_users_and_roles import seed_all
+
+# Get the list of tasks from the tasks API (tasks.py file)
+from tasks import tasks
 
 # Declare and create/instantiate a flask object
 app = Flask(__name__)
@@ -115,8 +121,51 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         # Process the form data(e.g., save to a database and so on)
-        flash("Registration or Sign-up successful", "success")
-        return redirect(url_for('success'))  # Redirect to a success page
+        try:
+            # check whether the user's email already exists in the database
+            if User.query.filter_by(email=form.email.data).first():
+                flash('Email already exists. Please use a different email or login.', 'danger')
+                return render_template('rgister.html', form=form)
+            # check if tje phone number already exists in the database
+            if User.query.filter_by(phone=form.phone.data).first():
+                flash('Phone number already exists. Please use a different phone number', 'danger')
+                return render_template('register.html', form=form)
+
+            # Create a new user in the database
+            new_user = User(
+                email=form.email.data,
+                full_name=form.names.data,
+                birth_date=form.birth_date.data,
+                gender=form.gender.data.lower(), # Convert to lowercase to match enum
+                phone=form.phone.data,
+                is_active=True
+            )
+
+            # Set the user's password
+            new_user.set_password(form.password.data)
+
+            #Add the new_user's details to the database
+            db.session.add(new_user)
+            db.session.flush() # Get the user ID
+
+            # Assign the new user the default role of customer
+            customer_role = Role.query.filter_by(name='Customer').first()
+            if customer_role:
+                user_role = UserRole(
+                    user_id=new_user.id,
+                    role_id=customer_role.id,
+                    assigned_by=None, # Self registration has no assigned by
+                    is_active=True
+                )
+                db.session,add(user_role)
+            db.session.commit()
+            flash("Registration or Sign-up successful, you can now login", "success")
+            # return redirect(url_for('success'))  # Redirect to a success page
+            return redirect(url_for('login'))  # Redirect to a login page
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Sorry there was an error during registration:\n{str(e)}", "danger")
+            return render_template('register.html', form=form)
     else:
         # Flash validation errors
         for field, errors in form.errors.items():
@@ -132,15 +181,55 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         # Process the form data (e.g. redirect to inbox, checkout, view post or friend profile & so on)
-        flash("Login or Sign-in Successful", "success")
-        return redirect(url_for('success'))  # Redirect to the success page
+
+        # Get the next page from the query parameter or session
+        next_page = request.args.get('next') or session.pop('next', None)
+
+        if form.validate_on_submit():
+            # Find the user by their email address
+            user = User.query.filter_by(email=form.email.data).first()
+
+            if user and user.check_password(form.password.data):
+                #Log in/sign in the user
+                login_user(user,remember=True)
+                user.last_login = datetime.now(timezone.utc)
+                db.session.commit()
+
+                flash("Welcome back, {user.full_name}!", "success")
+
+                # Redirect the user to the intended page or index
+                if next_page and next_page != url_for('login'):
+                    return redirect(next_page)
+                else:
+                    return redirect(url_for('index'))
+            else:
+                flash("Invalid email or password", 'danger')
+        # flash("Login or Sign-in Successful", "success")
+        # return redirect(url_for('success'))  # Redirect to the success page
     else:
         # Flash validation errors
         for field, errors in form.errors.items():
             for error in errors:
                 flash(f"Error in {getattr(form, field).label.text}: {error}", "danger")
+
+    # Store the next page in session for after successful login
+    if request.args.get('next'):
+        session['next'] = request.args.get('next')
     return render_template('login.html', form=form)
 
+# Route to logout/sign out the user
+@app.route('/logout')
+@login_required # requires the user to be logged in
+def logout():
+    logout_user()
+    flash("You have been logged out.", "success")
+    return redirect(url_for('index'))
+
+# Route to add the new user (will br accessed by admins only)
+@app.route("/add_user", methods=['GET','POST'])
+def add_user():
+    form = UserForm()
+    return render_template('add-user.html', form=form)
 
 # Route to success page
 @app.route('/success')
@@ -194,6 +283,17 @@ def delete_product(id):
         db.session.delete(product)
         db.session.commit()
     return redirect(url_for('products'))
+
+
+# Route to get or fetch the list of to do items/tasks
+@app.route('/get_tasks', methods=['GET'])
+def get_tasks():
+    return jsonify(tasks)
+
+# Route to display the table and their status (done or not done)
+@app.route('/tasks', methods=['GET'])
+def view_tasks():
+    return render_template('tasks.html')
 
 # Pages to handle site errors
 # 1. Handle bad request error (400 error)
